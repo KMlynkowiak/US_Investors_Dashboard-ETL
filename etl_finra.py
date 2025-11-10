@@ -96,7 +96,7 @@ def transformuj_dane_2009(df_raw):
     # LOGICZNE (BOOLEAN)
     df_clean['ma_fund_awaryjny'] = pd.to_numeric(df_raw['J5'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['liczyl_oszcz_emerytalne'] = pd.to_numeric(df_raw['J8'], errors='coerce').map(MAP_BOOLEAN)
-    df_clean['pytal_o_porade_inwest'] = pd.to_numeric(df_raw['K_2'], errors='coerce').map(MAP_BOOLEAN) # <-- Obecne w 2009
+    df_clean['pytal_o_porade_inwest'] = pd.to_numeric(df_raw['K_2'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['ma_konto_oszczednosciowe'] = pd.to_numeric(df_raw['B2'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['inwestuje_poza_emerytura'] = pd.to_numeric(df_raw['B14'], errors='coerce').map(MAP_BOOLEAN)
 
@@ -112,7 +112,7 @@ def transformuj_dane_2012(df_raw):
     df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC)
     df_clean['grupa_wiekowa'] = df_raw['A3Ar_w'].map(MAP_A3AR_W_WIEK)
     df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK)
-    df_clean['edukacja'] = df_raw['A5_2012'].map(MAP_A5_EDUKACJA) # <-- Zmiana nazwy
+    df_clean['edukacja'] = df_raw['A5_2012'].map(MAP_A5_EDUKACJA)
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
     df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD)
@@ -127,28 +127,23 @@ def transformuj_dane_2012(df_raw):
     # LOGICZNE (BOOLEAN)
     df_clean['ma_fund_awaryjny'] = pd.to_numeric(df_raw['J5'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['liczyl_oszcz_emerytalne'] = pd.to_numeric(df_raw['J8'], errors='coerce').map(MAP_BOOLEAN)
-    df_clean['pytal_o_porade_inwest'] = pd.to_numeric(df_raw['K_2'], errors='coerce').map(MAP_BOOLEAN) # <-- Obecne w 2012
+    df_clean['pytal_o_porade_inwest'] = pd.to_numeric(df_raw['K_2'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['ma_konto_oszczednosciowe'] = pd.to_numeric(df_raw['B2'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['inwestuje_poza_emerytura'] = pd.to_numeric(df_raw['B14'], errors='coerce').map(MAP_BOOLEAN)
 
     return df_clean
 
-# --- NOWA FUNKCJA DLA 2015 ---
 def transformuj_dane_2015(df_raw):
-    """
-    Funkcja przyjmuje surowy DataFrame z 2015 roku i zwraca
-    wyczyszczony, "zdeszyfrowany" DataFrame.
-    """
     df_clean = pd.DataFrame()
     df_clean['respondent_id'] = df_raw['NFCSID']
-    df_clean['rok_ankiety'] = 2015 # <-- ZMIANA 1
+    df_clean['rok_ankiety'] = 2015
     
     # KATEGORYCZNE
     df_clean['stan'] = df_raw['STATEQ'].map(MAP_STATEQ)
     df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC)
     df_clean['grupa_wiekowa'] = df_raw['A3Ar_w'].map(MAP_A3AR_W_WIEK)
     df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK)
-    df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA) # <-- ZMIANA 2 (nazwa kolumny)
+    df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA)
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
     df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD)
@@ -163,8 +158,43 @@ def transformuj_dane_2015(df_raw):
     # LOGICZNE (BOOLEAN)
     df_clean['ma_fund_awaryjny'] = pd.to_numeric(df_raw['J5'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['liczyl_oszcz_emerytalne'] = pd.to_numeric(df_raw['J8'], errors='coerce').map(MAP_BOOLEAN)
-    # <-- ZMIANA 3: Kolumna K_2 nie istnieje w 2015. Pomijamy ją.
-    # df_clean['pytal_o_porade_inwest'] = ...
+    # Kolumna K_2 nie istnieje w 2015. Pomijamy ją.
+    df_clean['ma_konto_oszczednosciowe'] = pd.to_numeric(df_raw['B2'], errors='coerce').map(MAP_BOOLEAN)
+    df_clean['inwestuje_poza_emerytura'] = pd.to_numeric(df_raw['B14'], errors='coerce').map(MAP_BOOLEAN)
+
+    return df_clean
+
+# --- NOWA FUNKCJA DLA 2018 ---
+def transformuj_dane_2018(df_raw):
+    """
+    Funkcja przyjmuje surowy DataFrame z 2018 roku i zwraca
+    wyczyszczony, "zdeszyfrowany" DataFrame.
+    """
+    df_clean = pd.DataFrame()
+    df_clean['respondent_id'] = df_raw['NFCSID']
+    df_clean['rok_ankiety'] = 2018 # <-- ZMIANA 1
+    
+    # KATEGORYCZNE
+    df_clean['stan'] = df_raw['STATEQ'].map(MAP_STATEQ)
+    df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC)
+    df_clean['grupa_wiekowa'] = df_raw['A3Ar_w'].map(MAP_A3AR_W_WIEK)
+    df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK)
+    df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA) # <-- ZMIANA 2 (nazwa kolumny 'A5_2015' jest poprawna dla pliku 2018)
+    df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
+    df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
+    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD)
+    df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
+    df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
+    df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
+
+    # NUMERYCZNE
+    j2_numeric = pd.to_numeric(df_raw['J2'], errors='coerce')
+    df_clean['sklonnosc_do_ryzyka'] = j2_numeric.replace([98, 99], np.nan)
+    
+    # LOGICZNE (BOOLEAN)
+    df_clean['ma_fund_awaryjny'] = pd.to_numeric(df_raw['J5'], errors='coerce').map(MAP_BOOLEAN)
+    df_clean['liczyl_oszcz_emerytalne'] = pd.to_numeric(df_raw['J8'], errors='coerce').map(MAP_BOOLEAN)
+    # Kolumna K_2 nie istnieje w 2018. Pomijamy ją.
     df_clean['ma_konto_oszczednosciowe'] = pd.to_numeric(df_raw['B2'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['inwestuje_poza_emerytura'] = pd.to_numeric(df_raw['B14'], errors='coerce').map(MAP_BOOLEAN)
 
@@ -180,7 +210,8 @@ def main():
     lista_plikow = [
         f"{data_raw_dir}/NFCS 2009 State Data 220712.csv",
         f"{data_raw_dir}/NFCS 2012 State Data 130503.csv",
-        f"{data_raw_dir}/NFCS 2015 State Data 160619.csv", # <-- DODANE
+        f"{data_raw_dir}/NFCS 2015 State Data 160619.csv",
+        f"{data_raw_dir}/NFCS 2018 State Data 190603.csv", # <-- DODANE
     ]
     
     lista_clean_df = []
@@ -195,9 +226,11 @@ def main():
             elif '2012' in plik_csv:
                 df_clean = transformuj_dane_2012(df_raw)
             elif '2015' in plik_csv:
-                df_clean = transformuj_dane_2015(df_raw) # <-- DODANE
-            # elif '2018' in plik_csv:
-            #     df_clean = transformuj_dane_2018(df_raw) # Gotowy na przyszłość
+                df_clean = transformuj_dane_2015(df_raw)
+            elif '2018' in plik_csv:
+                df_clean = transformuj_dane_2018(df_raw) # <-- DODANE
+            # elif '2021' in plik_csv:
+            #     df_clean = transformuj_dane_2021(df_raw) # Gotowy na przyszłość
             else:
                 print(f"Nie znaleziono funkcji transformującej dla {plik_csv}. Pomijam.")
                 continue
@@ -218,8 +251,6 @@ def main():
         return
 
     print("Scalanie wszystkich przetworzonych plików...")
-    # 'ignore_index=True' resetuje indeks
-    # 'sort=False' zachowuje kolejność kolumn (ważne, gdy brakuje kolumn)
     df_master = pd.concat(lista_clean_df, ignore_index=True, sort=False)
 
     # ----- LOAD (ZAPIS) -----
