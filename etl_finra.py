@@ -3,7 +3,8 @@ import numpy as np
 import os
 
 # === KROK 1: SŁOWNIKI MAPUJĄCE (MAPOWANIA) ===
-# (Bez zmian - używane przez wszystkie funkcje)
+
+# --- Mapowania Globalne (dla 2009-2018) ---
 MAP_STATEQ = {
     1: 'Alabama', 2: 'Alaska', 3: 'Arizona', 4: 'Arkansas', 5: 'California',
     6: 'Colorado', 7: 'Connecticut', 8: 'Delaware', 9: 'District of Columbia',
@@ -18,12 +19,12 @@ MAP_STATEQ = {
     44: 'Texas', 45: 'Utah', 46: 'Vermont', 47: 'Virginia', 48: 'Washington',
     49: 'West Virginia', 50: 'Wisconsin', 51: 'Wyoming'
 }
-MAP_A3_PLEC = {1: 'Male', 2: 'Female'}
+MAP_A3_PLEC = {1: 'Male', 2: 'Female'} # Dla 2009/2012
 MAP_A3AR_W_WIEK = {
     1: '18-24', 2: '25-34', 3: '35-44',
     4: '45-54', 5: '55-64', 6: '65+'
 }
-MAP_A3B_PLEC_WIEK = {
+MAP_A3B_PLEC_WIEK = { # Dla 2009/2012
     1: 'Male 18-24', 2: 'Male 25-34', 3: 'Male 35-44',
     4: 'Male 45-54', 5: 'Male 55-64', 6: 'Male 65+',
     7: 'Female 18-24', 8: 'Female 25-34', 9: 'Female 35-44',
@@ -45,7 +46,7 @@ MAP_A7_SYT_MIESZKANIOWA = {
     4: 'Live with other family/friends',
     99: np.nan
 }
-MAP_A8_DOCHOD = {
+MAP_A8_DOCHOD = { # Dla 2009/2012/2015/2018
     1: '< $15,000', 2: '$15k - $25k', 3: '$25k - $35k',
     4: '$35k - $50k', 5: '$50k - $75k', 6: '$75k - $100k',
     7: '$100k - $150k', 8: '$150k or more',
@@ -69,6 +70,36 @@ MAP_BOOLEAN = {
     2: False,
 }
 
+# --- NOWE Mapowania (specyficzne dla 2021) ---
+MAP_A50A_PLEC_2021 = {
+    1: 'Male',
+    2: 'Female',
+    3: 'Non-binary', # Nowa kategoria
+    4: np.nan        # Prefer not to say
+}
+MAP_A50B_PLEC_WIEK_2021 = {
+    1: 'Male 18-24', 2: 'Male 25-34', 3: 'Male 35-44',
+    4: 'Male 45-54', 5: 'Male 55-64', 6: 'Male 65+',
+    7: 'Female 18-24', 8: 'Female 25-34', 9: 'Female 35-44',
+    10: 'Female 45-54', 11: 'Female 55-64', 12: 'Female 65+',
+    13: 'Non-binary 18-24', 14: 'Non-binary 25-34', 15: 'Non-binary 35-44',
+    16: 'Non-binary 45-54', 17: 'Non-binary 55-64', 18: 'Non-binary 65+'
+}
+MAP_A8_DOCHOD_2021 = {
+    1: '< $20,000',
+    2: '$20k - $30k',
+    3: '$30k - $40k',
+    4: '$40k - $50k',
+    5: '$50k - $60k',
+    6: '$60k - $75k',
+    7: '$75k - $100k',
+    8: '$100k - $125k',
+    9: '$125k - $150k',
+    10: '$150k or more',
+    98: np.nan, 99: np.nan
+}
+
+
 # === KROK 2: FUNKCJE TRANSFORMACJI ===
 
 def transformuj_dane_2009(df_raw):
@@ -78,13 +109,13 @@ def transformuj_dane_2009(df_raw):
     
     # KATEGORYCZNE
     df_clean['stan'] = df_raw['STATEQ'].map(MAP_STATEQ)
-    df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC)
+    df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC) # Używa starej mapy
     df_clean['grupa_wiekowa'] = df_raw['A3Ar_w'].map(MAP_A3AR_W_WIEK)
-    df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK)
+    df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK) # Używa starej mapy
     df_clean['edukacja'] = df_raw['A5'].map(MAP_A5_EDUKACJA) 
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD)
+    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD) # Używa starej mapy
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
@@ -96,7 +127,7 @@ def transformuj_dane_2009(df_raw):
     # LOGICZNE (BOOLEAN)
     df_clean['ma_fund_awaryjny'] = pd.to_numeric(df_raw['J5'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['liczyl_oszcz_emerytalne'] = pd.to_numeric(df_raw['J8'], errors='coerce').map(MAP_BOOLEAN)
-    df_clean['pytal_o_porade_inwest'] = pd.to_numeric(df_raw['K_2'], errors='coerce').map(MAP_BOOLEAN)
+    df_clean['pytal_o_porade_inwest'] = pd.to_numeric(df_raw['K_2'], errors='coerce').map(MAP_BOOLEAN) # Obecne w 2009
     df_clean['ma_konto_oszczednosciowe'] = pd.to_numeric(df_raw['B2'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['inwestuje_poza_emerytura'] = pd.to_numeric(df_raw['B14'], errors='coerce').map(MAP_BOOLEAN)
 
@@ -109,13 +140,13 @@ def transformuj_dane_2012(df_raw):
     
     # KATEGORYCZNE
     df_clean['stan'] = df_raw['STATEQ'].map(MAP_STATEQ)
-    df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC)
+    df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC) # Używa starej mapy
     df_clean['grupa_wiekowa'] = df_raw['A3Ar_w'].map(MAP_A3AR_W_WIEK)
-    df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK)
+    df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK) # Używa starej mapy
     df_clean['edukacja'] = df_raw['A5_2012'].map(MAP_A5_EDUKACJA)
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD)
+    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD) # Używa starej mapy
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
@@ -127,7 +158,7 @@ def transformuj_dane_2012(df_raw):
     # LOGICZNE (BOOLEAN)
     df_clean['ma_fund_awaryjny'] = pd.to_numeric(df_raw['J5'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['liczyl_oszcz_emerytalne'] = pd.to_numeric(df_raw['J8'], errors='coerce').map(MAP_BOOLEAN)
-    df_clean['pytal_o_porade_inwest'] = pd.to_numeric(df_raw['K_2'], errors='coerce').map(MAP_BOOLEAN)
+    df_clean['pytal_o_porade_inwest'] = pd.to_numeric(df_raw['K_2'], errors='coerce').map(MAP_BOOLEAN) # Obecne w 2012
     df_clean['ma_konto_oszczednosciowe'] = pd.to_numeric(df_raw['B2'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['inwestuje_poza_emerytura'] = pd.to_numeric(df_raw['B14'], errors='coerce').map(MAP_BOOLEAN)
 
@@ -140,13 +171,13 @@ def transformuj_dane_2015(df_raw):
     
     # KATEGORYCZNE
     df_clean['stan'] = df_raw['STATEQ'].map(MAP_STATEQ)
-    df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC)
+    df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC) # Używa starej mapy
     df_clean['grupa_wiekowa'] = df_raw['A3Ar_w'].map(MAP_A3AR_W_WIEK)
-    df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK)
+    df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK) # Używa starej mapy
     df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA)
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD)
+    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD) # Używa starej mapy
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
@@ -164,25 +195,20 @@ def transformuj_dane_2015(df_raw):
 
     return df_clean
 
-# --- NOWA FUNKCJA DLA 2018 ---
 def transformuj_dane_2018(df_raw):
-    """
-    Funkcja przyjmuje surowy DataFrame z 2018 roku i zwraca
-    wyczyszczony, "zdeszyfrowany" DataFrame.
-    """
     df_clean = pd.DataFrame()
     df_clean['respondent_id'] = df_raw['NFCSID']
-    df_clean['rok_ankiety'] = 2018 # <-- ZMIANA 1
+    df_clean['rok_ankiety'] = 2018
     
     # KATEGORYCZNE
     df_clean['stan'] = df_raw['STATEQ'].map(MAP_STATEQ)
-    df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC)
+    df_clean['plec'] = df_raw['A3'].map(MAP_A3_PLEC) # Używa starej mapy
     df_clean['grupa_wiekowa'] = df_raw['A3Ar_w'].map(MAP_A3AR_W_WIEK)
-    df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK)
-    df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA) # <-- ZMIANA 2 (nazwa kolumny 'A5_2015' jest poprawna dla pliku 2018)
+    df_clean['plec_wiek'] = df_raw['A3B'].map(MAP_A3B_PLEC_WIEK) # Używa starej mapy
+    df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA)
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD)
+    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD) # Używa starej mapy
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
@@ -194,7 +220,43 @@ def transformuj_dane_2018(df_raw):
     # LOGICZNE (BOOLEAN)
     df_clean['ma_fund_awaryjny'] = pd.to_numeric(df_raw['J5'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['liczyl_oszcz_emerytalne'] = pd.to_numeric(df_raw['J8'], errors='coerce').map(MAP_BOOLEAN)
-    # Kolumna K_2 nie istnieje w 2018. Pomijamy ją.
+    # Kolumna K_2 nie istnieje.
+    df_clean['ma_konto_oszczednosciowe'] = pd.to_numeric(df_raw['B2'], errors='coerce').map(MAP_BOOLEAN)
+    df_clean['inwestuje_poza_emerytura'] = pd.to_numeric(df_raw['B14'], errors='coerce').map(MAP_BOOLEAN)
+
+    return df_clean
+
+# --- NOWA FUNKCJA DLA 2021 ---
+def transformuj_dane_2021(df_raw):
+    """
+    Funkcja przyjmuje surowy DataFrame z 2021 roku i zwraca
+    wyczyszczony, "zdeszyfrowany" DataFrame.
+    """
+    df_clean = pd.DataFrame()
+    df_clean['respondent_id'] = df_raw['NFCSID']
+    df_clean['rok_ankiety'] = 2021 # <-- ZMIANA 1
+    
+    # KATEGORYCZNE
+    df_clean['stan'] = df_raw['STATEQ'].map(MAP_STATEQ)
+    df_clean['plec'] = df_raw['A50A'].map(MAP_A50A_PLEC_2021) # <-- ZMIANA 2: Nowa nazwa i mapa
+    df_clean['grupa_wiekowa'] = df_raw['A3Ar_w'].map(MAP_A3AR_W_WIEK) # Bez zmian
+    df_clean['plec_wiek'] = df_raw['A50B'].map(MAP_A50B_PLEC_WIEK_2021) # <-- ZMIANA 3: Nowa nazwa i mapa
+    df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA) # Bez zmian (nadal A5_2015)
+    df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY) # Bez zmian
+    df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA) # Bez zmian
+    df_clean['dochod_roczny'] = df_raw['A8_2021'].map(MAP_A8_DOCHOD_2021) # <-- ZMIANA 4: Nowa nazwa i mapa
+    df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE) # Bez zmian
+    df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI) # Bez zmian
+    df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI) # Bez zmian
+
+    # NUMERYCZNE
+    j2_numeric = pd.to_numeric(df_raw['J2'], errors='coerce')
+    df_clean['sklonnosc_do_ryzyka'] = j2_numeric.replace([98, 99], np.nan)
+    
+    # LOGICZNE (BOOLEAN)
+    df_clean['ma_fund_awaryjny'] = pd.to_numeric(df_raw['J5'], errors='coerce').map(MAP_BOOLEAN)
+    df_clean['liczyl_oszcz_emerytalne'] = pd.to_numeric(df_raw['J8'], errors='coerce').map(MAP_BOOLEAN)
+    # Kolumna K_2 nie istnieje.
     df_clean['ma_konto_oszczednosciowe'] = pd.to_numeric(df_raw['B2'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['inwestuje_poza_emerytura'] = pd.to_numeric(df_raw['B14'], errors='coerce').map(MAP_BOOLEAN)
 
@@ -211,7 +273,8 @@ def main():
         f"{data_raw_dir}/NFCS 2009 State Data 220712.csv",
         f"{data_raw_dir}/NFCS 2012 State Data 130503.csv",
         f"{data_raw_dir}/NFCS 2015 State Data 160619.csv",
-        f"{data_raw_dir}/NFCS 2018 State Data 190603.csv", # <-- DODANE
+        f"{data_raw_dir}/NFCS 2018 State Data 190603.csv",
+        f"{data_raw_dir}/NFCS 2021 State Data 220627.csv", # <-- DODANE
     ]
     
     lista_clean_df = []
@@ -228,9 +291,11 @@ def main():
             elif '2015' in plik_csv:
                 df_clean = transformuj_dane_2015(df_raw)
             elif '2018' in plik_csv:
-                df_clean = transformuj_dane_2018(df_raw) # <-- DODANE
-            # elif '2021' in plik_csv:
-            #     df_clean = transformuj_dane_2021(df_raw) # Gotowy na przyszłość
+                df_clean = transformuj_dane_2018(df_raw)
+            elif '2021' in plik_csv:
+                df_clean = transformuj_dane_2021(df_raw) # <-- DODANE
+            # elif '2024' in plik_csv:
+            #     df_clean = transformuj_dane_2024(df_raw) # Gotowy na finał
             else:
                 print(f"Nie znaleziono funkcji transformującej dla {plik_csv}. Pomijam.")
                 continue
@@ -241,6 +306,10 @@ def main():
         except FileNotFoundError:
             print(f"BŁĄD KRYTYCZNY: Nie znaleziono pliku {plik_csv}.")
             print("Upewnij się, że plik istnieje w folderze 'data_raw' i nazwa w skrypcie jest poprawna.")
+            return
+        except KeyError as e:
+            print(f"BŁĄD KLUCZA (KeyError): Nie znaleziono kolumny {e} w pliku {plik_csv}.")
+            print("Sprawdź, czy nazwy kolumn w funkcji transformującej są poprawne dla tego roku.")
             return
         except Exception as e:
             print(f"BŁĄD podczas przetwarzania {plik_csv}: {e}")
