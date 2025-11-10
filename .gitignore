@@ -1,0 +1,11 @@
+# Ignoruj wszystkie pliki w folderach z danymi
+/data_raw/*
+/output/*
+
+# Ale pozwól na śledzenie pustych folderów przez pliki .gitkeep
+!/data_raw/.gitkeep
+!/output/.gitkeep
+
+# Ignoruj specyficzne pliki systemowe
+.DS_Store
+*.pyc
