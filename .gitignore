@@ -1,3 +1,6 @@
+# Ignoruj pliki CSV w głównym folderze
+/*.csv
+
 # Ignoruj wszystkie pliki w folderach z danymi
 /data_raw/*
 /output/*
@@ -9,3 +12,4 @@
 # Ignoruj specyficzne pliki systemowe
 .DS_Store
 *.pyc
+
