@@ -2,6 +2,7 @@ import numpy as np
 
 # === SŁOWNIKI MAPUJĄCE (KONFIGURACJA) ===
 
+# --- Rdzeń (Core) ---
 MAP_STATEQ = {
     1: 'Alabama', 2: 'Alaska', 3: 'Arizona', 4: 'Arkansas', 5: 'California',
     6: 'Colorado', 7: 'Connecticut', 8: 'Delaware', 9: 'District of Columbia',
@@ -60,7 +61,7 @@ MAP_A8_DOCHOD_2009_2018_2024 = {
     1: '< $15,000', 2: '$15k - $25k', 3: '$25k - $35k',
     4: '$35k - $50k', 5: '$50k - $75k', 6: '$75k - $100k',
     7: '$100k - $150k', 
-    8: '$150k or more', # Scalamy 8, 9, 10 z 2024
+    8: '$150k or more',
     9: '$150k or more',
     10: '$150k or more',
     98: np.nan, 99: np.nan
@@ -111,4 +112,41 @@ MAP_A50B_PLEC_WIEK_2021_PLUS = {
     10: 'Female 45-54', 11: 'Female 55-64', 12: 'Female 65+',
     13: 'Non-binary 18-24', 14: 'Non-binary 25-34', 15: 'Non-binary 35-44',
     16: 'Non-binary 45-54', 17: 'Non-binary 55-64', 18: 'Non-binary 65+'
+}
+# --- Mapowania Specyficzne (dla 2024) ---
+MAP_KREDYT_STUDENCKI_2024 = {
+    0: True,  # 0 = NOT SELECTED (czyli zaznaczył coś innego, więc ma kredyt)
+    1: False, # 1 = SELECTED (zaznaczył "No, do not currently have...")
+    98: np.nan,
+    99: np.nan
+}
+
+# [cite_start]2. Edukacja Finansowa (kolumna M20) [cite: 2221-2222]
+MAP_EDUKACJA_FIN = {
+    1: False, # "Yes, but I did not participate"
+    2: True,  # "Yes, and I did participate"
+    3: False, # "No"
+    98: np.nan,
+    99: np.nan
+}
+
+# [cite_start]3. Pieniądze na koniec miesiąca (kolumna J42_1) [cite: 1068-1069]
+MAP_KONIEC_MIESIACA = {
+    1: 'Never',
+    2: 'Rarely',
+    3: 'Sometimes',
+    4: 'Often',
+    5: 'Always',
+    98: np.nan,
+    99: np.nan
+}
+
+# [cite_start]4. Pewność funduszu awaryjnego (kolumna J20) [cite: 708-710]
+MAP_FUNDUSZ_PEWNOSC = {
+    1: 'Certain I could',
+    2: 'Probably could',
+    3: 'Probably could not',
+    4: 'Certain I could not',
+    98: np.nan,
+    99: np.nan
 }
