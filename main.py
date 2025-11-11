@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 # Importuje wszystkie funkcje transformujące z pliku obok
-from etl.transformations import *
+from transformations import *
 
 def main():
     

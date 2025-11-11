@@ -56,14 +56,11 @@ MAP_A7_SYT_MIESZKANIOWA = {
     4: 'Live with other family/friends',
     99: np.nan
 }
-# Mapa dochodu dla 2009-2018 ORAZ 2024
-MAP_A8_DOCHOD_2009_2018_2024 = {
+# Mapa dochodu dla 2009-2018
+MAP_A8_DOCHOD_2009_2018 = {
     1: '< $15,000', 2: '$15k - $25k', 3: '$25k - $35k',
     4: '$35k - $50k', 5: '$50k - $75k', 6: '$75k - $100k',
-    7: '$100k - $150k', 
-    8: '$150k or more',
-    9: '$150k or more',
-    10: '$150k or more',
+    7: '$100k - $150k', 8: '$150k or more',
     98: np.nan, 99: np.nan
 }
 # Mapa dochodu TYLKO dla 2021
@@ -78,6 +75,20 @@ MAP_A8_DOCHOD_2021 = {
     8: '$100k - $125k',
     9: '$125k - $150k',
     10: '$150k or more',
+    98: np.nan, 99: np.nan
+}
+# Mapa dochodu TYLKO dla 2024 (na podstawie PDF 2024 [cite: 2636-2659])
+MAP_A8_DOCHOD_2024 = {
+    1: '< $15,000', 
+    2: '$15k - $25k', 
+    3: '$25k - $35k',
+    4: '$35k - $50k', 
+    5: '$50k - $75k', 
+    6: '$75k - $100k',
+    7: '$100k - $150k', 
+    8: '$150k - $200k',
+    9: '$200k - $300k',
+    10: '$300k or more',
     98: np.nan, 99: np.nan
 }
 MAP_A9_ZATRUDNIENIE = {
@@ -113,24 +124,27 @@ MAP_A50B_PLEC_WIEK_2021_PLUS = {
     13: 'Non-binary 18-24', 14: 'Non-binary 25-34', 15: 'Non-binary 35-44',
     16: 'Non-binary 45-54', 17: 'Non-binary 55-64', 18: 'Non-binary 65+'
 }
-# --- Mapowania Specyficzne (dla 2024) ---
+
+# --- NOWE MAPY DLA "WERSJI 2.0" ---
+
+# Kredyt studencki 2024 (kolumna G30_97) [cite: 1888-1891]
 MAP_KREDYT_STUDENCKI_2024 = {
-    0: True,  # 0 = NOT SELECTED (czyli zaznaczył coś innego, więc ma kredyt)
-    1: False, # 1 = SELECTED (zaznaczył "No, do not currently have...")
+    0: True,
+    1: False,
     98: np.nan,
     99: np.nan
 }
 
-# [cite_start]2. Edukacja Finansowa (kolumna M20) [cite: 2221-2222]
+# Edukacja Finansowa (kolumna M20) [cite: 2221-2222]
 MAP_EDUKACJA_FIN = {
-    1: False, # "Yes, but I did not participate"
-    2: True,  # "Yes, and I did participate"
-    3: False, # "No"
+    1: False,
+    2: True,
+    3: False,
     98: np.nan,
     99: np.nan
 }
 
-# [cite_start]3. Pieniądze na koniec miesiąca (kolumna J42_1) [cite: 1068-1069]
+# Pieniądze na koniec miesiąca (kolumna J42_1) [cite: 1068-1069]
 MAP_KONIEC_MIESIACA = {
     1: 'Never',
     2: 'Rarely',
@@ -141,7 +155,7 @@ MAP_KONIEC_MIESIACA = {
     99: np.nan
 }
 
-# [cite_start]4. Pewność funduszu awaryjnego (kolumna J20) [cite: 708-710]
+# Pewność funduszu awaryjnego (kolumna J20) [cite: 708-710]
 MAP_FUNDUSZ_PEWNOSC = {
     1: 'Certain I could',
     2: 'Probably could',

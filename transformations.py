@@ -18,7 +18,7 @@ def transformuj_dane_2009(df_raw):
     df_clean['edukacja'] = df_raw['A5'].map(MAP_A5_EDUKACJA_2009_2012) 
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD_2009_2018_2024)
+    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD_2009_2018) # <-- Poprawka
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
@@ -40,8 +40,6 @@ def transformuj_dane_2009(df_raw):
 
     return df_clean
 
-# W pliku transformations.py ZASTĄP TĘ FUNKCJĘ:
-
 def transformuj_dane_2012(df_raw):
     df_clean = pd.DataFrame()
     df_clean['respondent_id'] = df_raw['NFCSID']
@@ -55,7 +53,7 @@ def transformuj_dane_2012(df_raw):
     df_clean['edukacja'] = df_raw['A5_2012'].map(MAP_A5_EDUKACJA_2009_2012)
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD_2009_2018_2024)
+    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD_2009_2018) # <-- Poprawka
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
@@ -67,10 +65,8 @@ def transformuj_dane_2012(df_raw):
     df_clean['ma_konto_oszczednosciowe'] = pd.to_numeric(df_raw['B2'], errors='coerce').map(MAP_BOOLEAN)
     df_clean['inwestuje_poza_emerytura'] = pd.to_numeric(df_raw['B14'], errors='coerce').map(MAP_BOOLEAN)
 
-    # --- NOWE KOLUMNY "V2" (Z POPRAWKĄ) ---
-    # POPRAWKA: Prawidłowa kolumna to 'G20', a nie 'F1_2012'
+    # --- NOWE KOLUMNY "V2" ---
     df_clean['ma_kredyt_studencki'] = pd.to_numeric(df_raw['G20'], errors='coerce').map(MAP_BOOLEAN)
-    
     df_clean['inwestuje_w_krypto'] = np.nan
     df_clean['uczestniczyl_w_edukacji_fin'] = np.nan
     df_clean['ma_pieniadze_na_koniec_miesiaca'] = np.nan
@@ -92,7 +88,7 @@ def transformuj_dane_2015(df_raw):
     df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA_2015_PLUS) 
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD_2009_2018_2024) 
+    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD_2009_2018) # <-- Poprawka
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
@@ -127,7 +123,7 @@ def transformuj_dane_2018(df_raw):
     df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA_2015_PLUS) 
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD_2009_2018_2024) 
+    df_clean['dochod_roczny'] = df_raw['A8'].map(MAP_A8_DOCHOD_2009_2018) # <-- Poprawka
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
@@ -162,7 +158,7 @@ def transformuj_dane_2021(df_raw):
     df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA_2015_PLUS)
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8_2021'].map(MAP_A8_DOCHOD_2021) 
+    df_clean['dochod_roczny'] = df_raw['A8_2021'].map(MAP_A8_DOCHOD_2021) # Używa mapy 2021
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
@@ -197,7 +193,8 @@ def transformuj_dane_2024(df_raw):
     df_clean['edukacja'] = df_raw['A5_2015'].map(MAP_A5_EDUKACJA_2015_PLUS)
     df_clean['stan_cywilny'] = df_raw['A6'].map(MAP_A6_STAN_CYWILNY)
     df_clean['syt_mieszkaniowa'] = df_raw['A7'].map(MAP_A7_SYT_MIESZKANIOWA)
-    df_clean['dochod_roczny'] = df_raw['A8_2021'].map(MAP_A8_DOCHOD_2009_2018_2024) 
+    # POPRAWKA 2024: Używa nazwy 'A8_2021' ale mapy 'MAP_A8_DOCHOD_2024'
+    df_clean['dochod_roczny'] = df_raw['A8_2021'].map(MAP_A8_DOCHOD_2024) 
     df_clean['status_zatrudnienia'] = df_raw['A9'].map(MAP_A9_ZATRUDNIENIE)
     df_clean['liczba_dzieci'] = df_raw['A11'].map(MAP_A11_DZIECI)
     df_clean['trudnosc_z_rachunkami'] = df_raw['J4'].map(MAP_J4_RACHUNKI)
